@@ -89,7 +89,7 @@ model Likes {
 }
 
 
-Comments {
+model Comments {
   id       String @id @default(cuid())
   text     String
   createdAt DateTime @default(now())
