@@ -1,27 +1,52 @@
 import { User, Divider } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AiOutlineHeart,
   AiOutlineComment,
   AiOutlineShareAlt,
 } from "react-icons/ai";
+import { IconContext } from "react-icons";
 
 import type { Likes, Questions } from "@prisma/client";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import HeartIcon from "@/components/icons/HeartIcon";
 export default function Post({ question, user }: any) {
+  const { data: session } = useSession();
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  useEffect(() => {
+    checkLike();
+  }, []);
   const { mutate: handleLike, isPending } = useMutation({
     mutationFn: async () => {
       const payload = {
         questionId: question.id,
-
-        userId: user.id,
+        userId: session?.user.id,
       };
-      const { data } = await axios.post("/api/likes", payload);
-
-      return data as string;
+      checkLike();
+      if (!isLiked) {
+        const { data } = await axios.post("/api/likes", payload);
+        setIsLiked(true);
+        return data as string;
+      }
+      if (isLiked) {
+        const { data } = await axios.delete("/api/likes", {
+          data: payload,
+        });
+        setIsLiked(false);
+        return data as string;
+      }
     },
   });
+  function checkLike() {
+    for (let i = 0; i < question.likes.length; i++) {
+      if (question.likes[i].userId === session?.user.id) {
+        setIsLiked(true);
+        return;
+      }
+    }
+  }
   return (
     <div key={question.id} className=" bg-white p-4 flex flex-col gap-2 my-4">
       <div className="font-bold">{question.content}</div>
@@ -40,13 +65,17 @@ export default function Post({ question, user }: any) {
       <div className="answer text-sm">{question.answer}</div>
       <Divider className="my-1" />
       <div className="footer flex gap-4 ">
-        <div>
-          <AiOutlineHeart size="30" />
-        </div>
+        <IconContext.Provider
+          value={{ color: "red", className: "bg-red-500 w-fit" }}
+        >
+          <div onClick={() => handleLike()}>
+            <HeartIcon isLiked={isLiked} />
+          </div>
+        </IconContext.Provider>
         <div>
           <AiOutlineComment size="30" />
         </div>
-        <div onClick={() => handleLike()}>
+        <div>
           <AiOutlineShareAlt size="30" />
         </div>
       </div>
