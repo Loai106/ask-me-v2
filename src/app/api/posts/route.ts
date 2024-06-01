@@ -2,7 +2,7 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Prisma } from "@prisma/client";
 
-export default async function GET(req:Request) {
+export  async function GET(req:Request) {
 
     const session = await getAuthSession();
     const userId = session?.user.id;
