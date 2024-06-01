@@ -24,6 +24,8 @@ async function ProfilePage({ params }: ProfilePageProps) {
   const session = await getAuthSession();
   console.log("Url: " + params.username + " Session: " + session?.user.id);
 
+
+
   let user = await db.user.findFirst({
     where: {
       id: params.username,
