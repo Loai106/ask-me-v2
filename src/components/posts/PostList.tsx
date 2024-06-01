@@ -1,15 +1,22 @@
 'use client';
 import React, { useEffect } from 'react'
-
+import { FC } from 'react';
+import { Questions  , User} from '@prisma/client';
 import { AiOutlineHeart ,AiOutlineComment,AiOutlineShareAlt } from 'react-icons/ai'
-import { Button ,User ,Link ,Divider} from '@nextui-org/react'
+import { Button  ,Link ,Divider} from '@nextui-org/react'
 import { UseInfiniteQueryOptions, useInfiniteQuery, useMutation } from '@tanstack/react-query';
 
 import axios from 'axios'
+import Post from './Post';
+
+  interface PostListProps {
+    questions: Questions[]
+    user: User
+
+  }
 
 
-
-  function PostList({questions , user}:any) {
+   const PostList:FC<PostListProps> = ({questions,user})=> {
 
     
     const {mutate: getPosts , data, error,isPending} = useMutation({
@@ -24,72 +31,18 @@ import axios from 'axios'
 
 useEffect(()=>{
   getPosts();
+  console.log('deb')
+  console.log(data)
  
 },[getPosts])
 
 
-// const renderedPosts = data.map((post)=>{
-//   return <div key={post.id}></div>
-// })
+const renderedPosts = data && Array.isArray(data)? (data.map((post:any)=><Post key={post.id} question={post} user={post.user}/> )) :<div>No data</div>
 
 
+if(!data) return <div>no data</div>
+return <div>{renderedPosts}</div>
 
-
-    // const renderedQuestions = questions.map((question:any)=>{
-    //   return (
-    //     <div key={question.id} className=' bg-white p-4 flex flex-col gap-2 my-4'>
-    //     <div className='font-bold'>{question.content}</div>
-    //     <div className='details'>
-    //       <div className='text-sm text-red-400 '>{question.isAnonymous?"Anonymous":question.authorId}</div>
-    //       <User   
-    //           name={user.name}
-    //           description="4 days ago"
-    //           avatarProps={{
-    //             src: user.image
-    //           }}
-    //         />           
-    //       </div>
-    //     <div className='answer text-sm'>{question.answer}</div>
-    //     <Divider className='my-1'/>
-    //     <div className='footer flex gap-4 '>
-    //       <div><AiOutlineHeart size="30"/></div>
-    //       <div><AiOutlineComment size="30"/></div>
-    //       <div><AiOutlineShareAlt size="30"/></div>
-
-    //     </div>
-    //   </div>
-    //   )
-
-    // })
-
-    // const renderedPosts = Array.from({length:5}).map((_,i)=>(
-    //     <div key={i} className=' bg-white p-4 flex flex-col gap-2 my-4'>
-    //     <div className='font-bold'>Is everything ok?</div>
-    //     <div className='details'>
-    //       <div className='text-sm text-red-400 '>Anonymous</div>
-    //       <User   
-    //           name="Junior Garcia"
-    //           description="4 days ago"
-    //           avatarProps={{
-    //             src: "https://avatars.githubusercontent.com/u/30373425?v=4"
-    //           }}
-    //         />           
-    //       </div>
-    //     <div className='answer text-sm'>I am good</div>
-    //     <Divider className='my-1'/>
-    //     <div className='footer flex gap-4 '>
-    //       <div><AiOutlineHeart size="30"/></div>
-    //       <div><AiOutlineComment size="30"/></div>
-    //       <div><AiOutlineShareAlt size="30"/></div>
-
-    //     </div>
-    //   </div>
-
-    //   ))
-
-   if(data) return <div>{JSON.stringify(data)}</div>;
-
-   return <div>no posts</div>
 }
 
 export default PostList

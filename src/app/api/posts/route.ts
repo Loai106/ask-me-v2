@@ -10,14 +10,14 @@ export  async function GET(req:Request) {
     try{
         const following = await db.follows.findMany({
             where:{
-                followerId:userId
+                followingId:userId
             },
             select:{
-                followingId:true
+                followerId:true
             }
         });
 
-        const followingIds = following.map(f =>f.followingId);
+        const followingIds = following.map(f =>f.followerId);
 
         const posts = await db.questions.findMany({
             where: {
