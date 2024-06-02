@@ -29,6 +29,7 @@ export default async function page() {
           questionId={question.id || ""}
           question={question.content}
           isAnonymous={question.isAnonymous}
+          createdAt={question.createdAt}
         />
       );
 
@@ -45,6 +46,7 @@ export default async function page() {
         isAnonymous={question.isAnonymous}
         image={user?.image || ""}
         authorName={user?.name || ""}
+        createdAt={question.createdAt}
       />
     );
   });

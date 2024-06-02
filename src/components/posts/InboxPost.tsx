@@ -6,21 +6,12 @@ import { useRouter } from "next/navigation";
 import {useMutation} from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { AnswerCreationRequest } from '@/lib/validators/answer';
-
-
-interface InboxPostProps {
-
-    questionId:string
-    question: string
-    image ?: string
-    isAnonymous : boolean
-    authorName?: string
-    // date : date
-}
+import { formatTimeToNow } from '@/lib/utils';
 
 
 
-export default  function InboxPost({questionId,question,image,isAnonymous,authorName}:InboxPostProps) {
+
+export default  function InboxPost({questionId,question,image,isAnonymous,authorName,createdAt}:any) {
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [input,setInput] = useState<string>('');
 
@@ -45,7 +36,7 @@ export default  function InboxPost({questionId,question,image,isAnonymous,author
         <div className='details'>
           <User   
               name={isAnonymous ? "Anonymous" : authorName}
-              description="4 days ago"
+              description={formatTimeToNow(new Date(createdAt))}
               avatarProps={{
                 src: isAnonymous ? "" : image
               }}
