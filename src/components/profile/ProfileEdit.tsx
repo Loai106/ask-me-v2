@@ -52,7 +52,7 @@ async function ProfileEdit({ user, urlParam }: ProfileEditProps) {
         },
       });
     }
-    revalidatePath(`/${{ urlParam }}`);
+    revalidatePath(`/${urlParam}`);
   }
 
   return (

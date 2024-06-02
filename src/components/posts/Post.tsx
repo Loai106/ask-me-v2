@@ -20,6 +20,9 @@ export default function Post({ question, user }: any) {
   }, []);
   const { mutate: handleLike, isPending } = useMutation({
     mutationFn: async () => {
+      if (!session?.user) {
+        return;
+      }
       const payload = {
         questionId: question.id,
         userId: session?.user.id,
