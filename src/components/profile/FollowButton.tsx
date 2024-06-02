@@ -11,15 +11,32 @@ function FollowButton({ isLoggedinUser, isFollowing }: FollowButtonProps) {
   function handleFollow() {
     setIsFollowed(!isFollowed);
   }
-  return (
+
+  function copyLink() {
+    console.log("Link Copied...");
+  }
+  const theButton = !isLoggedinUser ? (
     <Button
       className=" w-full bg-red-400 text-white "
-      type="submit"
-      onClick={isLoggedinUser ? handleFollow : undefined}
+      type="button"
+      onClick={handleFollow}
     >
-      {isLoggedinUser ? "Share Page" : !isFollowed ? "Follow" : "Unfollow"}
+      {!isFollowed ? "Follow" : "Unfollow"}
+    </Button>
+  ) : (
+    <Button
+      className=" w-full bg-red-400 text-white "
+      onClick={(e) => {
+        e.preventDefault();
+        copyLink();
+        console.log("clicked");
+      }}
+    >
+      {"Share Page"}
     </Button>
   );
+
+  return theButton;
 }
 
 export default FollowButton;

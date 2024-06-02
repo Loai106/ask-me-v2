@@ -14,10 +14,20 @@ import { IoHomeOutline } from "react-icons/io5";
 
 import { SearchIcon } from "./icons/SearchIcon";
 import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
 import SignUp from "./ui/SignUp";
 async function Header() {
   const session = await getAuthSession();
-  console.log("Header:  " + session?.user.username);
+  let count;
+  if (session?.user) {
+    const numberOfRecords = await db.questions.count({
+      where: {
+        answer: null,
+        userId: session.user.id,
+      },
+    });
+    count = numberOfRecords;
+  }
   return (
     <div className="flex justify-center bg-white px-4">
       <div className="w-full max-w-screen-md">
@@ -50,8 +60,11 @@ async function Header() {
                 </Link>
               </NavbarItem>
               <NavbarItem>
-                <Link href="/inbox">
+                <Link href="/inbox" className="relative inline-block">
                   <IoMailOpenOutline size="30" className="text-xl" />
+                  <span className="absolute -top-1 -left-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                    {count || 0}
+                  </span>
                 </Link>
               </NavbarItem>
               <NavbarItem>
