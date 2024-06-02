@@ -27,6 +27,7 @@ async function ProfilePage({ params }: ProfilePageProps) {
   console.log("Url: " + params.username + " Session: " + session?.user.id);
 
 
+
   //fetching user's posts
   const posts = await db.questions.findMany({
     where: {
@@ -44,6 +45,8 @@ async function ProfilePage({ params }: ProfilePageProps) {
   });
 
 
+=======
+
   let user = await db.user.findFirst({
     where: {
       id: params.username,
@@ -54,6 +57,7 @@ async function ProfilePage({ params }: ProfilePageProps) {
       receivedQuestions: true,
     },
   });
+
   // Check if user is null and handle the case
   if (!user) {
     console.log("User not found");
@@ -80,6 +84,7 @@ async function ProfilePage({ params }: ProfilePageProps) {
             followersCount={user?.followers.length || 0}
             followingCount={user?.following.length || 0}
             recievedQuestionsCount={user?.receivedQuestions.length || 0}
+            theurl={params.username}
           />
         </div>
         <ProfileEdit user={user} urlParam={params.username} />
