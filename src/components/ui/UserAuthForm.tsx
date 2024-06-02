@@ -29,7 +29,7 @@ export default function UserAuthForm({className,...props}:UserAuthFormProps) {
   return (
     <div >
          
-         <Button onClick={loginWithGoogle} color="danger" type='submit' className='w-full'>Google</Button>
+         <Button onClick={loginWithGoogle} color="danger" type='submit' className='w-full'><h1 className='text-3xl'>G</h1>Sign In With Google</Button>
 
     </div>
   )
