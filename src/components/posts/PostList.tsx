@@ -42,7 +42,6 @@ const renderedPosts = data && Array.isArray(data)? (data.map((post:any)=><Post k
 
 if(!data) return <div>no data</div>
 return <div>{renderedPosts}</div>
-
 }
 
-export default PostList
+export default PostList;
