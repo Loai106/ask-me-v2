@@ -35,8 +35,8 @@ async function Header() {
         <div className="flex flex-col">
           <Navbar className="container flex  justify-between items-center">
             <NavbarBrand>
-              <Link href="/" className="font-bold">
-                AskMe
+              <Link href="/" className="font-extrabold text-3xl italic">
+                Ask<span className="text-danger-500">Me</span>
               </Link>
             </NavbarBrand>
             <NavbarContent>

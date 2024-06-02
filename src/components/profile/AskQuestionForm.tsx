@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import { Button, Textarea, Switch } from "@nextui-org/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {useMutation} from '@tanstack/react-query';
+import { useMutation } from "@tanstack/react-query";
 import { QuestionCreationRequest } from "@/lib/validators/question";
-import axios, { AxiosError } from 'axios';
-import { toast } from '@/hooks/use-toast'
+import axios, { AxiosError } from "axios";
+import { toast } from "@/hooks/use-toast";
 
 interface AskQuestionFormProps {
   params: {
@@ -13,43 +13,38 @@ interface AskQuestionFormProps {
   };
 }
 
-
-function AskQuestionForm({params}:AskQuestionFormProps) {
-
-  const [input,setInput] = useState<string>('');
+function AskQuestionForm({ params }: AskQuestionFormProps) {
+  const [input, setInput] = useState<string>("");
   const [isAnon, setIsAnon] = useState<boolean>(false);
   const router = useRouter();
 
-  const {mutate: createQuestion , isPending} = useMutation({
-    mutationFn: async ()=>{
-      const payload : QuestionCreationRequest = {
-        content:input,
-        isAnonymous:isAnon,
-        receiverId : params.username,
+  const { mutate: createQuestion, isPending } = useMutation({
+    mutationFn: async () => {
+      const payload: QuestionCreationRequest = {
+        content: input,
+        isAnonymous: isAnon,
+        receiverId: params.username,
+      };
 
-      }
-
-    
-
-      const {data} = await axios.post('/api/questions',payload);
+      const { data } = await axios.post("/api/questions", payload);
       return data as string;
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
           return toast({
-            title: 'Subreddit already exists.',
-            description: 'Please choose a different name.',
-            variant: 'destructive',
-          })
+            title: "Subreddit already exists.",
+            description: "Please choose a different name.",
+            variant: "destructive",
+          });
         }
 
         if (err.response?.status === 422) {
           return toast({
-            title: 'Invalid subreddit name.',
-            description: 'Please choose a name between 3 and 21 letters.',
-            variant: 'destructive',
-          })
+            title: "Invalid subreddit name.",
+            description: "Please choose a name between 3 and 21 letters.",
+            variant: "destructive",
+          });
         }
 
         // if (err.response?.status === 401) {
@@ -58,22 +53,35 @@ function AskQuestionForm({params}:AskQuestionFormProps) {
       }
 
       toast({
-        title: 'There was an error.',
-        description: 'Could not create subreddit.',
-        variant: 'destructive',
-      })
+        title: "There was an error.",
+        description: "Could not create subreddit.",
+        variant: "destructive",
+      });
     },
-    
-   
-  })
-
+  });
 
   return (
-    <form action={()=> createQuestion()}>
-      <Textarea value={input} name="question" placeholder="Ask a Question!" onChange={(e)=> setInput(e.target.value)} />
+    <form action={() => createQuestion()}>
+      <Textarea
+        value={input}
+        name="question"
+        placeholder="Ask a Question!"
+        onChange={(e) => setInput(e.target.value)}
+      />
       <div className="my-2 flex justify-between">
-        <Button  type="submit" isDisabled={input.length===0}  isLoading={isPending} className="bg-red-400 text-white">{isAnon?"Ask anonymously":"Ask Publicly"}</Button>
-        <Switch isSelected={isAnon} onValueChange={setIsAnon} color="danger"></Switch>
+        <Button
+          type="submit"
+          isDisabled={input.length === 0}
+          isLoading={isPending}
+          className="bg-red-400 text-white"
+        >
+          {isAnon ? "Ask anonymously" : "Ask Publicly"}
+        </Button>
+        <Switch
+          isSelected={isAnon}
+          onValueChange={setIsAnon}
+          color="danger"
+        ></Switch>
       </div>
     </form>
   );
@@ -81,8 +89,6 @@ function AskQuestionForm({params}:AskQuestionFormProps) {
 
 export default AskQuestionForm;
 
-
 function userRouter() {
   throw new Error("Function not implemented.");
 }
-

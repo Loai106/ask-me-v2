@@ -53,14 +53,20 @@ export default function Post({ question, user }: any) {
       }
     }
   }
+  async function copyLink() {
+    const link = question.id
+      ? `http://localhost:3000/post/${question.id}`
+      : "http://localhost:3000";
 
+    await navigator.clipboard.writeText(link);
+  }
   if (!question.answer) return;
   return (
-    <div key={question.id} className=" bg-white p-4 flex flex-col gap-2 my-4">
+    <div key={question.id} className=" bg-white p-4 flex flex-col gap-2 my-2">
       <div className="font-bold">{question.content}</div>
       <div className="details">
         <div className="text-sm text-red-400 ">
-          {question.isAnonymous ? "Anonymous" : question.author.name }
+          {question.isAnonymous ? "Anonymous" : question.author.name}
         </div>
         <UserAvatar
           name={user.name}
@@ -81,9 +87,11 @@ export default function Post({ question, user }: any) {
           </div>
         </IconContext.Provider>
         <div>
-          <Link href={`/post/${question.id}`}><AiOutlineComment size="30" /></Link>
+          <Link href={`/post/${question.id}`}>
+            <AiOutlineComment size="30" />
+          </Link>
         </div>
-        <div>
+        <div onClick={copyLink} className="cursor-pointer">
           <AiOutlineShareAlt size="30" />
         </div>
       </div>

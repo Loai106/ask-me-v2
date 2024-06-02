@@ -4,10 +4,10 @@ import { db } from '@/lib/db'
 import { Questions } from '@prisma/client'
 import React from 'react'
 
-interface PageProps{
-    params :{
-        postId : string
-    }
+interface PageProps {
+  params: {
+    postId: string;
+  };
 }
 
 
@@ -39,6 +39,5 @@ export default async function page({params}:PageProps) {
        </div>
       </div>
     </div>
-     
-  )
+  );
 }

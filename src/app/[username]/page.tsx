@@ -7,7 +7,7 @@ import ProfileNumbers from "@/components/profile/ProfileNumbers";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { User, Follows, Questions } from "@prisma/client";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import PostList from "@/components/posts/PostList";
 import Post from "@/components/posts/Post";
 
@@ -26,8 +26,6 @@ async function ProfilePage({ params }: ProfilePageProps) {
   const session = await getAuthSession();
   console.log("Url: " + params.username + " Session: " + session?.user.id);
 
-
-
   //fetching user's posts
   const posts = await db.questions.findMany({
     where: {
@@ -40,11 +38,9 @@ async function ProfilePage({ params }: ProfilePageProps) {
     include: {
       user: true,
       likes: true,
-      author:true,
+      author: true,
     },
   });
-
-
 
   let user = await db.user.findFirst({
     where: {
@@ -60,7 +56,7 @@ async function ProfilePage({ params }: ProfilePageProps) {
   // Check if user is null and handle the case
   if (!user) {
     console.log("User not found");
-    return notFound();
+    redirect("/");
   }
   return (
     <main className="container mx-auto flex flex-col  items-center w-full max-w-screen-md">
@@ -88,11 +84,11 @@ async function ProfilePage({ params }: ProfilePageProps) {
         </div>
         <ProfileEdit user={user} urlParam={params.username} />
         <AskQuestionForm params={params} />
-        <div className="flex flex-col ">
-              {
-                posts.map((post)=> <Post key={post.id} question={post} user={post.user}/> )
-              }
-        </div>
+      </div>
+      <div className="flex  w-full flex-col mt-2  ">
+        {posts.map((post) => (
+          <Post key={post.id} question={post} user={post.user} />
+        ))}
       </div>
     </main>
   );
