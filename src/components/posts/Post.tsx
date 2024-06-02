@@ -14,9 +14,12 @@ import { useSession } from "next-auth/react";
 import HeartIcon from "@/components/icons/HeartIcon";
 import Link from "next/link";
 import { formatTimeToNow } from "@/lib/utils";
+import { useRouter } from 'next/navigation'
 
 export default function Post({ question, user }: any) {
+  const [numLikes , setNumLikes] = useState<number>(question.likes.length)
   const { data: session } = useSession();
+  const router = useRouter()
   const [isLiked, setIsLiked] = useState<boolean>(false);
   useEffect(() => {
     checkLike();
@@ -34,16 +37,23 @@ export default function Post({ question, user }: any) {
       if (!isLiked) {
         const { data } = await axios.post("/api/likes", payload);
         setIsLiked(true);
+        setNumLikes(()=>numLikes+1)
         return data as string;
       }
       if (isLiked) {
         const { data } = await axios.delete("/api/likes", {
           data: payload,
         });
+        setNumLikes(()=>numLikes-1)
+
         setIsLiked(false);
+
         return data as string;
       }
     },
+    onSuccess : ()=>{
+      router.refresh();
+    }
   });
   function checkLike() {
     for (let i = 0; i < question.likes.length; i++) {
@@ -68,6 +78,7 @@ export default function Post({ question, user }: any) {
         <div className="text-sm text-red-400 ">
           {question.isAnonymous ? "Anonymous" : question.author.name}
         </div>
+        <Link href={`/${user.id}`}>
         <UserAvatar
           name={user.name}
           description={formatTimeToNow(new Date(question.createdAt))}
@@ -75,20 +86,23 @@ export default function Post({ question, user }: any) {
             src: user.image,
           }}
         />
+        </Link>
       </div>
       <div className="answer text-sm">{question.answer}</div>
       <Divider className="my-1" />
-      <div className="footer flex gap-4 ">
+      <div className="footer flex gap-4  ">
         <IconContext.Provider
           value={{ color: "red", className: "bg-red-500 w-fit" }}
         >
-          <div onClick={() => handleLike()}>
+          <div onClick={() => handleLike()} className="flex gap-1">
             <HeartIcon isLiked={isLiked} />
+            <span>{numLikes>0 ?numLikes: null}</span>
           </div>
         </IconContext.Provider>
         <div>
-          <Link href={`/post/${question.id}`}>
+          <Link className="flex gap-1" href={`/post/${question.id}`}>
             <AiOutlineComment size="30" />
+            <span>{/*question.comments.length>0 ?question.comments.length : null */}</span>
           </Link>
         </div>
         <div onClick={copyLink} className="cursor-pointer">
