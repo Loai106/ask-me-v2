@@ -34,8 +34,8 @@ async function Header() {
         <div className="flex flex-col">
           <Navbar className="container flex  justify-between items-center">
             <NavbarBrand>
-              <Link href="/" className="font-bold">
-                AskMe
+              <Link href="/" className="font-extrabold text-3xl italic">
+                Ask<span className="text-danger-500">Me</span>
               </Link>
             </NavbarBrand>
             <NavbarContent>
@@ -65,11 +65,6 @@ async function Header() {
                   <span className="absolute -top-1 -left-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
                     {count || 0}
                   </span>
-                </Link>
-              </NavbarItem>
-              <NavbarItem>
-                <Link href="/notifications">
-                  <IoMdNotificationsOutline size="30" className="text-xl" />
                 </Link>
               </NavbarItem>
               <NavbarItem>
