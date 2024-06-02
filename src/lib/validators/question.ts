@@ -10,6 +10,7 @@ export const QuestionValidator = z.object({
       message: 'Title must be less than 280 characters long',
     }),
     isAnonymous: z.boolean(),
+    receiverId : z.string()
   
 })
 

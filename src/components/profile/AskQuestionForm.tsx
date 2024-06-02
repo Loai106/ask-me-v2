@@ -7,8 +7,14 @@ import { QuestionCreationRequest } from "@/lib/validators/question";
 import axios, { AxiosError } from 'axios';
 import { toast } from '@/hooks/use-toast'
 
+interface AskQuestionFormProps {
+  params: {
+    username: string;
+  };
+}
 
-function AskQuestionForm() {
+
+function AskQuestionForm({params}:AskQuestionFormProps) {
 
   const [input,setInput] = useState<string>('');
   const [isAnon, setIsAnon] = useState<boolean>(false);
@@ -19,6 +25,8 @@ function AskQuestionForm() {
       const payload : QuestionCreationRequest = {
         content:input,
         isAnonymous:isAnon,
+        receiverId : params.username,
+
       }
 
     
@@ -72,6 +80,8 @@ function AskQuestionForm() {
 }
 
 export default AskQuestionForm;
+
+
 function userRouter() {
   throw new Error("Function not implemented.");
 }

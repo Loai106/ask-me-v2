@@ -14,14 +14,14 @@ export async function POST(req:Request) {
         }
 
         const body = await req.json();
-        const {content,isAnonymous} = QuestionValidator.parse(body);
+        const {content,isAnonymous,receiverId} = QuestionValidator.parse(body);
 
         const question = await db.questions.create({
             data:{
                 content,
                 isAnonymous,
                 authorId:session.user.id,
-                userId: session.user.id,
+                userId:receiverId ,
             },
         })
 

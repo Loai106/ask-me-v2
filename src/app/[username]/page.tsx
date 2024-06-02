@@ -65,7 +65,7 @@ async function ProfilePage({ params }: ProfilePageProps) {
           />
         </div>
         <ProfileEdit user={user} urlParam={params.username} />
-        <AskQuestionForm />
+        <AskQuestionForm params={params} />
       </div>
     </main>
   );

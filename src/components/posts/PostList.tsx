@@ -16,7 +16,7 @@ import Post from './Post';
   }
 
 
-   const PostList:FC<PostListProps> = ({questions,user})=> {
+   const PostList:FC<PostListProps> = ()=> {
 
     
     const {mutate: getPosts , data, error,isPending} = useMutation({
