@@ -29,7 +29,7 @@ async function ProfilePage({ params }: ProfilePageProps) {
   //fetching user's posts
   const posts = await db.questions.findMany({
     where: {
-      userId: session?.user.id,
+      userId: params.username,
       //
     },
     orderBy: {

@@ -4,12 +4,13 @@ import { Prisma, User } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { SearchIcon } from 'lucide-react'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {Listbox, ListboxItem, Chip, ScrollShadow, Avatar} from "@nextui-org/react";
 import { ListboxWrapper } from './ui/ListboxWrapper';
 import debounce from 'lodash.debounce'
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useOnClickOutside } from '@/hooks/use-on-click-outside';
 
 
 interface SearchBarProps {}
@@ -42,6 +43,15 @@ const router = useRouter()
     enabled:false,
 
  })
+
+ useOnClickOutside(commandRef, () => {
+  setInput('')
+})
+
+useEffect(() => {
+  setInput('')
+}, [pathname])
+
 
  const request = debounce(()=>{
     refetch()

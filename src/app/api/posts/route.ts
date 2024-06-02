@@ -33,6 +33,7 @@ export async function GET(req: Request) {
         user: true,
         likes: true,
         author:true,
+        comments:true,
       },
     });
 
