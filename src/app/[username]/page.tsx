@@ -45,7 +45,6 @@ async function ProfilePage({ params }: ProfilePageProps) {
   });
 
 
-=======
 
   let user = await db.user.findFirst({
     where: {
