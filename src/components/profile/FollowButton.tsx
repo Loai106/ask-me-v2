@@ -4,16 +4,26 @@ import { useState } from "react";
 interface FollowButtonProps {
   isLoggedinUser: boolean;
   isFollowing: boolean;
+  isSession: boolean;
 }
 
-function FollowButton({ isLoggedinUser, isFollowing }: FollowButtonProps) {
+function FollowButton({
+  isLoggedinUser,
+  isFollowing,
+  isSession,
+}: FollowButtonProps) {
   const [isFollowed, setIsFollowed] = useState(isFollowing);
   function handleFollow() {
-    setIsFollowed(!isFollowed);
+    if (isSession) {
+      setIsFollowed(!isFollowed);
+    }
+    return;
   }
 
-  function copyLink() {
-    console.log("Link Copied...");
+  async function copyLink() {
+    const link = window.location.href;
+
+    await navigator.clipboard.writeText(link);
   }
   const theButton = !isLoggedinUser ? (
     <Button
