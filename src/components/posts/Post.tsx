@@ -7,12 +7,13 @@ import {
   AiOutlineShareAlt,
 } from "react-icons/ai";
 import { IconContext } from "react-icons";
-
 import type { Likes, Questions ,User } from "@prisma/client";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import HeartIcon from "@/components/icons/HeartIcon";
+import Link from "next/link";
+import { formatTimeToNow } from "@/lib/utils";
 
 interface PostProps {
     question : Questions
@@ -68,11 +69,11 @@ export default function Post({ question, user }: any) {
       <div className="font-bold">{question.content}</div>
       <div className="details">
         <div className="text-sm text-red-400 ">
-          {question.isAnonymous ? "Anonymous" : question.authorId}
+          {question.isAnonymous ? "Anonymous" : question.author.name }
         </div>
         <UserAvatar
           name={user.name}
-          description="4 days ago"
+          description={formatTimeToNow(new Date(question.createdAt))}
           avatarProps={{
             src: user.image,
           }}
@@ -89,7 +90,7 @@ export default function Post({ question, user }: any) {
           </div>
         </IconContext.Provider>
         <div>
-          <AiOutlineComment size="30" />
+          <Link href={`/post/${question.id}`}><AiOutlineComment size="30" /></Link>
         </div>
         <div>
           <AiOutlineShareAlt size="30" />

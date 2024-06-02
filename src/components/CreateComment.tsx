@@ -4,13 +4,17 @@ import { Textarea , Button } from '@nextui-org/react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
 
-interface CreateCommentProps {}
+interface CreateCommentProps {
+  postId: string
+  replyToId?: string
+}
 
-export default function CreateComment({}: CreateCommentProps) {
+export default function CreateComment({postId , replyToId}: CreateCommentProps) {
   const [input,setInput] = useState<string>("");
-
-  const {} = useMutation({
+  const router = useRouter();
+  const {mutate:createComment , isPending } = useMutation({
     mutationFn: async({postId , text , replyToId}: CommentRequest)=>{
         const payload : CommentRequest = {
             postId,
@@ -22,6 +26,10 @@ export default function CreateComment({}: CreateCommentProps) {
         const {data} = await axios.patch('/api/questions/comment',payload);
         return data;
     },
+    onSuccess : ()=>{
+      router.refresh();
+      setInput('');
+    }
   
     
   })
@@ -31,6 +39,7 @@ export default function CreateComment({}: CreateCommentProps) {
         
         <div className='mt-2'>
             <Textarea
+                color='danger'
                 label="Your Comment" 
                 placeholder='write a comment ' 
                 id='comment' 
@@ -40,7 +49,7 @@ export default function CreateComment({}: CreateCommentProps) {
                 />
         </div>
         <div className='mt-2 flex justify-end'>
-            <Button>Post</Button>
+            <Button  isLoading={isPending} disabled={input.length === 0} color='danger' onClick={(e)=>createComment({postId,text:input , replyToId})}>Comment</Button>
         </div>
     </div>
   )

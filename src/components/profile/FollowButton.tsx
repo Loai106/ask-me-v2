@@ -18,7 +18,7 @@ function FollowButton({ isLoggedinUser, isFollowing }: FollowButtonProps) {
   const theButton = !isLoggedinUser ? (
     <Button
       className=" w-full bg-red-400 text-white "
-      type="button"
+      type="submit"
       onClick={handleFollow}
     >
       {!isFollowed ? "Follow" : "Unfollow"}

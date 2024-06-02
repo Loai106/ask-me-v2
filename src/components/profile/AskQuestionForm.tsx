@@ -72,7 +72,7 @@ function AskQuestionForm({params}:AskQuestionFormProps) {
     <form action={()=> createQuestion()}>
       <Textarea value={input} name="question" placeholder="Ask a Question!" onChange={(e)=> setInput(e.target.value)} />
       <div className="my-2 flex justify-between">
-        <Button  type="submit" isDisabled={input.length===0}  isLoading={isPending} className="bg-red-400 text-white">Ask anonymously</Button>
+        <Button  type="submit" isDisabled={input.length===0}  isLoading={isPending} className="bg-red-400 text-white">{isAnon?"Ask anonymously":"Ask Publicly"}</Button>
         <Switch isSelected={isAnon} onValueChange={setIsAnon} color="danger"></Switch>
       </div>
     </form>

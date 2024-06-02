@@ -7,23 +7,12 @@ export async function GET(req: Request) {
   const userId = session?.user.id;
 
   try {
-    const following = await db.follows.findMany({
-      where: {
-        followingId: userId,
-      },
-      select: {
-        followerId: true,
-      },
-    });
+   
 
-    const followingIds = following.map((f) => f.followerId);
-    followingIds.push(session?.user.id || "");
 
     const posts = await db.questions.findMany({
       where: {
-        userId: {
-          in: followingIds,
-        },
+        userId: session?.user.id,
         //
       },
       orderBy: {

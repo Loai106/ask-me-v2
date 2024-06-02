@@ -8,6 +8,8 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import type { User, Follows, Questions } from "@prisma/client";
 import { notFound } from "next/navigation";
+import PostList from "@/components/posts/PostList";
+import Post from "@/components/posts/Post";
 
 interface ProfilePageProps {
   params: {
@@ -24,6 +26,22 @@ async function ProfilePage({ params }: ProfilePageProps) {
   const session = await getAuthSession();
   console.log("Url: " + params.username + " Session: " + session?.user.id);
 
+
+  //fetching user's posts
+  const posts = await db.questions.findMany({
+    where: {
+      userId: session?.user.id,
+      //
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      user: true,
+      likes: true,
+      author:true,
+    },
+  });
 
 
   let user = await db.user.findFirst({
@@ -66,6 +84,11 @@ async function ProfilePage({ params }: ProfilePageProps) {
         </div>
         <ProfileEdit user={user} urlParam={params.username} />
         <AskQuestionForm params={params} />
+        <div className="flex flex-col ">
+              {
+                posts.map((post)=> <Post key={post.id} question={post} user={post.user}/> )
+              }
+        </div>
       </div>
     </main>
   );

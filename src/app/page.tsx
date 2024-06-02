@@ -28,7 +28,7 @@ export default async function page() {
     <div className="my-4 flex justify-center  px-4">
       <div className="w-full max-w-screen-md">
         <div className="flex flex-col">
-          <PostList questions={answeredQuestions} user={session?.user} />
+          <PostList />
         </div>
       </div>
     </div>
