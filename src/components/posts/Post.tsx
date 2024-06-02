@@ -1,3 +1,10 @@
+
+
+
+
+    
+
+   
 import { User, Divider } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -12,7 +19,20 @@ import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import HeartIcon from "@/components/icons/HeartIcon";
+
+interface PostProps {
+    question : Questions
+    user : User
+}
+
+
+
+
 export default function Post({ question, user }: any) {
+  
+  if(!question.answer) return ;
+
+  
   const { data: session } = useSession();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   useEffect(() => {
