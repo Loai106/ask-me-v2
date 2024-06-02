@@ -1,3 +1,5 @@
+import { getAuthSession } from "@/lib/auth";
+import Link from "next/link";
 import React from "react";
 
 interface ProfileNumbersProps {
@@ -5,11 +7,12 @@ interface ProfileNumbersProps {
   followingCount: number;
   recievedQuestionsCount: number;
 }
-function ProfileNumbers({
+async function ProfileNumbers({
   followersCount,
   followingCount,
   recievedQuestionsCount,
 }: ProfileNumbersProps) {
+  const session = await getAuthSession();
   return (
     <div className="flex gap-4 justify-end text-center">
       <div>

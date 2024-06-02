@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { User as UserAvatar, Divider } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -8,22 +8,13 @@ import {
 } from "react-icons/ai";
 import { IconContext } from "react-icons";
 
-import type { Likes, Questions ,User } from "@prisma/client";
+import type { Likes, Questions, User } from "@prisma/client";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import HeartIcon from "@/components/icons/HeartIcon";
 
-interface PostProps {
-    question : Questions
-    user : User
-}
-
-
-
-
 export default function Post({ question, user }: any) {
-    
   const { data: session } = useSession();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   useEffect(() => {
@@ -62,7 +53,7 @@ export default function Post({ question, user }: any) {
     }
   }
 
-  if(!question.answer) return ;
+  if (!question.answer) return;
   return (
     <div key={question.id} className=" bg-white p-4 flex flex-col gap-2 my-4">
       <div className="font-bold">{question.content}</div>
