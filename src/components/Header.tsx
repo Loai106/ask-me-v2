@@ -16,6 +16,7 @@ import { SearchIcon } from "./icons/SearchIcon";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import SignUp from "./ui/SignUp";
+import SearchBar from "./SearchBar";
 async function Header() {
   const session = await getAuthSession();
   let count;
@@ -39,14 +40,7 @@ async function Header() {
               </Link>
             </NavbarBrand>
             <NavbarContent>
-              <Input
-                placeholder="Search Username"
-                size="sm"
-                type="email"
-                startContent={
-                  <SearchIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-                }
-              />
+              <SearchBar/>
             </NavbarContent>
             <NavbarContent justify="end" className="flex space-x-4">
               <NavbarItem>
@@ -67,11 +61,7 @@ async function Header() {
                   </span>
                 </Link>
               </NavbarItem>
-              <NavbarItem>
-                <Link href="/notifications">
-                  <IoMdNotificationsOutline size="30" className="text-xl" />
-                </Link>
-              </NavbarItem>
+            
               <NavbarItem>
                 {session ? <SignUp /> : <Link href="/sign-in">Sign in</Link>}
               </NavbarItem>
