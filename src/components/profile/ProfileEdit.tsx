@@ -38,6 +38,7 @@ async function ProfileEdit({ user, urlParam }: ProfileEditProps) {
         },
       });
     }
+
     //unfollowLogic
     if (isFollowing) {
       await db.follows.delete({
@@ -52,6 +53,8 @@ async function ProfileEdit({ user, urlParam }: ProfileEditProps) {
         },
       });
     }
+    revalidatePath(`/${session?.user.id || ""}/following`);
+    revalidatePath(`/${urlParam}/followers`);
     revalidatePath(`/${urlParam}`);
   }
 
