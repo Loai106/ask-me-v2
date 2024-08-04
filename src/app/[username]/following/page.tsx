@@ -4,7 +4,6 @@ import { getAuthSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import React from "react";
 import { db } from "@/lib/db";
-import type { Follows } from "@prisma/client";
 import { User as UserAvatar } from "@nextui-org/react";
 import Link from "next/link";
 interface FollowersPageProps {
