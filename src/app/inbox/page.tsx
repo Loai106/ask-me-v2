@@ -15,6 +15,10 @@ export default async function page() {
     where: {
       userId: session?.user.id,
     },
+    orderBy:{
+      createdAt:"desc"
+    }
+    
   });
 
   const renderedQuestions = receivedQuestions.map(async (question) => {
