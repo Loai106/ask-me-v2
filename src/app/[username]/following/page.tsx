@@ -34,7 +34,7 @@ async function FollowersPage({ params }: FollowersPageProps) {
       <div className="w-full max-w-screen-md">
         <h1 className="font-bold text-3xl mb-3">Following</h1>
         <ul className="flex flex-col">
-          {user?.followers.map((e) => {
+          {user?.followers.map((e:any) => {
             return (
               <li
                 key={e.follower.id}
