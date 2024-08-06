@@ -30,7 +30,7 @@ useEffect(()=>{
   getPosts();
   console.log(data)
   
-},[getPosts,data])
+},[])
 
 
 const renderedPosts = data && Array.isArray(data)? (data.map((post:any)=><Post key={post.id} question={post} user={post.user}/> )) :<div>No data</div>
